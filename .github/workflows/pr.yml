@@ -35,18 +35,11 @@ jobs:
         terraform_version: '0.14.5'
 
     - name: 'Terraform Init'
+      id: init
       run: 'terraform init -input=false'
 
-    - name: TF Lint
-      continue-on-error: true
-      uses: reviewdog/action-tflint@v1.17.0
-      with:
-        github_token: ${{ secrets.github_token }}
-        fail_on_error: "true"
-        filter_mode: "nofilter"
-        level: "warning"
-
     - name: 'Terraform Validate'
+      id: validate
       run: 'terraform validate -no-color'
 
     - name: Terraform Plan
@@ -59,6 +52,11 @@ jobs:
         name: terraform-plan
         path: ./terraform.plan
         if-no-files-found: error
+
+    - name: 'Terraform fmt'
+      id: fmt
+      run: 'terraform fmt -diff -check'
+      continue-on-error: true
 
     - name: Find Comment
       uses: peter-evans/find-comment@v1
@@ -89,9 +87,7 @@ jobs:
             </details>
         reaction-type: "rocket"
 
-    - name: 'Terraform fmt'
-      run: 'terraform fmt -diff -check'
-      continue-on-error: true
+
     # - uses: champ-oss/terraform-pr-summary
     #   if: github.event_name == 'pull_request'
     #   with:
