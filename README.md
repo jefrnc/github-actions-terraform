@@ -4,6 +4,8 @@ This repository has a github action for terraform projects. In case of making a 
 
 If a Pull request is generated from develop to master, add the plan in the same PR.
 
+Example of the pull request and its linked plan: https://github.com/jefrnc/terraform-github-actions/pull/4
+
 ```yml
 name: 'Terraform'
 
