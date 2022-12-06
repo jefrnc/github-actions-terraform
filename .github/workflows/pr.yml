@@ -10,6 +10,8 @@ on:
     #- 'terraform-e2e-ci/**'
     #- '.github/workflows/terraform*'
 
+concurrency: terraform-${{ github.ref }}
+
 jobs:
   # main config
   main:
@@ -20,18 +22,24 @@ jobs:
     - name: 'checkout'
       uses: 'actions/checkout@v2'
 
-    - name: 'setup-terraform'
+    - name: 'Setup Terraform'
       uses: 'hashicorp/setup-terraform@v1'
       with:
         terraform_version: '0.14.5'
 
-    - name: 'init'
-      #working-directory: './terraform'
+    - name: 'Terraform Init'
       run: 'terraform init'
 
-    - name: 'validate'
-      #working-directory: './terraform'
-      run: 'terraform validate'
+    - name: TF Lint
+      uses: reviewdog/action-tflint@v1.17.0
+      with:
+        github_token: ${{ secrets.github_token }}
+        fail_on_error: "true"
+        filter_mode: "nofilter"
+        level: "warning"
+
+    - name: 'Terraform Validate'
+      run: 'terraform validate -no-color'
 
     - name: 'fmt'
       #working-directory: './terraform'
