@@ -1,17 +1,5 @@
-variable "aws_access_key" {
-  description = "Access-key-for-AWS"
-  default = "no_access_key_value_found"
-}
- 
-variable "aws_secret_key" {
-  description = "Secret-key-for-AWS"
-  default = "no_secret_key_value_found"
-}
- 
 provider "aws" {
 	region = "eu-west-3"
-	access_key = var.aws_access_key
-	secret_key = var.aws_secret_key
 }
  
 resource "aws_instance" "example" {
