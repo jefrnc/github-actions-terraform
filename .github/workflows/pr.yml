@@ -62,6 +62,11 @@ jobs:
     - name: 'Terraform fmt'
       run: 'terraform fmt -diff -check'
       continue-on-error: true
+
+    - uses: champ-oss/terraform-pr-summary
+      if: github.event_name == 'pull_request'
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
       
     - name: Terraform Apply
       if: github.ref == 'refs/heads/main' && github.event_name == 'push'
