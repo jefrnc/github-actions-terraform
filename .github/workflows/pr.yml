@@ -58,12 +58,10 @@ jobs:
         name: terraform-plan
         path: ./terraform.plan
         if-no-files-found: error
-        
 
     - name: 'Terraform fmt'
       run: 'terraform fmt -diff -check'
       continue-on-error: true
-
     - uses: champ-oss/terraform-pr-summary
       if: github.event_name == 'pull_request'
       with:
