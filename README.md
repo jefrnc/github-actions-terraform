@@ -1,4 +1,4 @@
-# terraform-github-actions
+# github-actions-terraform
 
 This repository has a github action for terraform projects. In case of making a commit in the "main" branch, the terraform apply is executed directly.
 
