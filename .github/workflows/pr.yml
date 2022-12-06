@@ -38,6 +38,7 @@ jobs:
       run: 'terraform init -input=false'
 
     - name: TF Lint
+      continue-on-error: true
       uses: reviewdog/action-tflint@v1.17.0
       with:
         github_token: ${{ secrets.github_token }}
