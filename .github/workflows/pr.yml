@@ -5,10 +5,10 @@ on:
     branches:
       - main  
   pull_request:
-    paths:
-    - 'terraform/**'
-    - 'terraform-e2e-ci/**'
-    - '.github/workflows/terraform*'
+    #paths:
+    #- 'terraform/**'
+    #- 'terraform-e2e-ci/**'
+    #- '.github/workflows/terraform*'
 
 jobs:
   # main config
@@ -26,13 +26,13 @@ jobs:
         terraform_version: '0.14.5'
 
     - name: 'init'
-      working-directory: './terraform'
+      #working-directory: './terraform'
       run: 'terraform init'
 
     - name: 'validate'
-      working-directory: './terraform'
+      #working-directory: './terraform'
       run: 'terraform validate'
 
     - name: 'fmt'
-      working-directory: './terraform'
+      #working-directory: './terraform'
       run: 'terraform fmt -diff -check'
