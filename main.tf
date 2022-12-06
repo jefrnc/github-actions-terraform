@@ -2,7 +2,7 @@ provider "aws" {
 	region = "eu-west-3"
 }
  
-resource "aws_instance" "example" {
+resource "aws_instance" "examplevm" {
 	ami = "ami-0357d42faf6fa582f"
 	instance_type = "t2.micro"
  
@@ -21,7 +21,7 @@ resource "aws_instance" "example" {
 }
  
 resource "aws_security_group" "instance" {
-	name = "terraform-tcp-security-group"
+	name = "terraform-vm-tcp-security-group"
  
 	ingress {
 		from_port = 80
