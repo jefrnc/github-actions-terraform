@@ -28,7 +28,7 @@ jobs:
         terraform_version: '0.14.5'
 
     - name: 'Terraform Init'
-      run: 'terraform init'
+      run: 'terraform init -input=false'
 
     - name: TF Lint
       uses: reviewdog/action-tflint@v1.17.0
@@ -41,9 +41,20 @@ jobs:
     - name: 'Terraform Validate'
       run: 'terraform validate -no-color'
 
-    - name: 'fmt'
-      #working-directory: './terraform'
+    - name: Terraform Plan
+      id: plan
+      run: terraform plan -no-color -input=false -out terraform.plan
+
+    - name: Store plan
+      uses: actions/upload-artifact@v2
+      with:
+        name: terraform-plan
+        path: ./terraform.plan
+        if-no-files-found: error
+
+    - name: 'Terraform fmt'
       run: 'terraform fmt -diff -check'
+      continue-on-error: true
       
     - name: Terraform Apply
       if: github.ref == 'refs/heads/main' && github.event_name == 'push'
