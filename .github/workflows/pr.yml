@@ -59,6 +59,35 @@ jobs:
         path: ./terraform.plan
         if-no-files-found: error
 
+    - name: Find Comment
+      uses: peter-evans/find-comment@v1
+      if: github.event_name == 'pull_request' && always()
+      id: fc
+      with:
+        issue-number: ${{ github.event.pull_request.number }}
+        body-includes: "Terraform Format and Style 🖌"
+
+    - name: Add comment
+      if: github.event_name == 'pull_request' && always()
+      uses: peter-evans/create-or-update-comment@v1
+      with:
+        comment-id: ${{ steps.fc.outputs.comment-id }}
+        issue-number: ${{ github.event.pull_request.number }}
+        edit-mode: replace
+        body: |
+          #### Terraform Format and Style 🖌
+          `${{ steps.fmt.outcome }}`
+          #### Terraform Initialization ⚙️
+          `${{ steps.init.outcome }}`
+          #### Terraform Validation 🤖
+          ${{ steps.validate.outputs.stdout }}
+          #### Terraform Plan 📖
+          `${{ steps.plan.outcome }}`
+          <details><summary>Show Plan</summary>
+          ```terraform\n${{ steps.plan.outputs.stdout }}```
+          </details>
+        reaction-type: "rocket"
+
     - name: 'Terraform fmt'
       run: 'terraform fmt -diff -check'
       continue-on-error: true
