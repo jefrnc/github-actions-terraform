@@ -13,7 +13,6 @@ on:
 concurrency: terraform-${{ github.ref }}
 
 jobs:
-  # main config
   main:
     name: 'main'
     runs-on: 'ubuntu-latest'
@@ -86,12 +85,6 @@ jobs:
             ```terraform\n${{ steps.plan.outputs.stdout }}```
             </details>
         reaction-type: "rocket"
-
-
-    # - uses: champ-oss/terraform-pr-summary
-    #   if: github.event_name == 'pull_request'
-    #   with:
-    #     token: ${{ secrets.GITHUB_TOKEN }}
       
     - name: Terraform Apply
       if: github.ref == 'refs/heads/main' && github.event_name == 'push'
