@@ -36,3 +36,7 @@ jobs:
     - name: 'fmt'
       #working-directory: './terraform'
       run: 'terraform fmt -diff -check'
+      
+    - name: Terraform Apply
+      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+      run: terraform apply -auto-approve
