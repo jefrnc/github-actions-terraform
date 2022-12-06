@@ -59,6 +59,14 @@ jobs:
         path: ./terraform.plan
         if-no-files-found: error
 
+    - name: Find Comment
+      uses: peter-evans/find-comment@v1
+      if: github.event_name == 'pull_request' && always()
+      id: fc
+      with:
+        issue-number: ${{ github.event.pull_request.number }}
+        body-includes: "Terraform Format and Style 🖌"
+
     - name: 'Terraform fmt'
       run: 'terraform fmt -diff -check'
       continue-on-error: true
